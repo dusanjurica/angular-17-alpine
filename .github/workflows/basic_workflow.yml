@@ -2,6 +2,8 @@ on:
   - "push"
 
 jobs:
+
+
   create_docker_image:
     runs-on: ubuntu-latest
     name: "Create djorigin/angular:17-alpine"
@@ -12,13 +14,22 @@ jobs:
           echo $(docker info)
       
       - name: "Checkout"
-        uses: actions/checkout@v4
+        uses: actions/checkout@v4        
+
+      - name: "Set tag"
+        id: step_settag
+        run: |
+          echo "TAG=djorigin/angular17:${{ github.run_number }}" >> $GITHUB_ENV
 
       - name: "Build docker image"
         id: step_buildimage
         run: |
-          docker build -t angular:17.${{ github.run_number }}-alpine -f ./src/Dockerfile .
+          docker build -t ${{ env.TAG }} -t "latest" -f ./src/Dockerfile .
 
       - name: "Login to Docker hub"
         run: |
           docker login -u ${{ vars.DOCKERHUB_USER }} -p ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: "Push to docker.io public registry"
+        run: |
+          docker push ${{ env.TAG }}
