@@ -1,0 +1,12 @@
+on:
+  - "push"
+
+jobs:
+  create_docker_image:
+    runs-on: ubuntu-latest
+    name: "Create djorigin/angular:17-alpine"
+    steps:
+      - name: "Preparation"
+        id: step_preparation
+        run: |
+          echo $(docker info)
