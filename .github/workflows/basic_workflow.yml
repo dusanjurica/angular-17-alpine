@@ -17,8 +17,9 @@ jobs:
 
       - name: "Set tags"
         run: |
-          echo "TAG_LATEST=latest" >> $GITHUB_ENV
-          echo "TAG_NUMBER=${{ github.run_number }}" >> $GITHUB_ENV
+          IMAGE_NAME=djorigin/angular17
+          echo "TAG_LATEST=${IMAGE_NAME}:latest" >> $GITHUB_ENV
+          echo "TAG_NUMBER=${IMAGE_NAME}:${{ github.run_number }}" >> $GITHUB_ENV
 
       - name: "Build docker image"
         run: |
