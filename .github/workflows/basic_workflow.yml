@@ -9,22 +9,20 @@ jobs:
     name: "Create djorigin/angular:17-alpine"
     steps:
       - name: "Docker info"
-        id: step_dockerinfo
         run: |
           echo $(docker info)
       
       - name: "Checkout"
         uses: actions/checkout@v4        
 
-      - name: "Set tag"
-        id: step_settag
+      - name: "Set tags"
         run: |
-          echo "TAG=djorigin/angular17:${{ github.run_number }}" >> $GITHUB_ENV
+          echo "TAG_LATEST=latest" >> $GITHUB_ENV
+          echo "TAG_NUMBER=${{ github.run_number }}" >> $GITHUB_ENV
 
       - name: "Build docker image"
-        id: step_buildimage
         run: |
-          docker build -t ${{ env.TAG }} -t "latest" -f ./src/Dockerfile .
+          docker build -t ${{ env.TAG_LATEST }} -t ${{ env.TAG_NUMBER }} -f ./src/Dockerfile .
 
       - name: "Login to Docker hub"
         run: |
@@ -32,4 +30,4 @@ jobs:
 
       - name: "Push to docker.io public registry"
         run: |
-          docker push ${{ env.TAG }}
+          docker push -a djorigin/angular17
