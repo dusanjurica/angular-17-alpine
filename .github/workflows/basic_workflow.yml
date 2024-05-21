@@ -14,4 +14,4 @@ jobs:
       - name: "Build docker image"
         id: step_buildimage
         run: |
-          docker build -t angular:17.${{ github.run_number }}-alpine
+          docker build -t angular:17.${{ github.run_number }}-alpine .
